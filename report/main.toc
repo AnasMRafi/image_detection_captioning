@@ -1,0 +1,79 @@
+\babel@toc {french}{}\relax 
+\contentsline {chapter}{Résumé}{1}{chapter*.1}%
+\contentsline {chapter}{Abstract}{2}{chapter*.2}%
+\contentsline {chapter}{\numberline {1}Introduction Générale}{1}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Cadrage du Projet}{2}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Périmètre Fonctionnel}{2}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Fonctionnalités du Système}{2}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Justification de l'Architecture Client-Serveur}{2}{subsection.2.1.2}%
+\contentsline {section}{\numberline {2.2}Spécifications Techniques}{3}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Stack Technologique}{3}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Environnement d'Entraînement}{3}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Architecture des Modèles}{3}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Interface de Programmation (API)}{3}{subsection.2.2.4}%
+\contentsline {section}{\numberline {2.3}Contraintes et Exigences}{4}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Exigences de Performance}{4}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Exigences de Qualité}{4}{subsection.2.3.2}%
+\contentsline {section}{\numberline {2.4}Critères de Validation}{4}{section.2.4}%
+\contentsline {chapter}{\numberline {3}État de l'Art : Fondements Théoriques}{5}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Réseaux de Neurones Convolutifs (CNN)}{5}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Principe de la Convolution}{5}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Hiérarchie des Représentations}{5}{subsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.1.3}Architecture InceptionV3}{5}{subsection.3.1.3}%
+\contentsline {subsubsection}{\numberline {3.1.3.1}Principe des Modules Inception}{5}{subsubsection.3.1.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.3.2}Architecture Complète d'InceptionV3}{6}{subsubsection.3.1.3.2}%
+\contentsline {section}{\numberline {3.2}Réseaux Récurrents (RNN/LSTM)}{7}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Modélisation Séquentielle}{7}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Architecture LSTM}{7}{subsection.3.2.2}%
+\contentsline {section}{\numberline {3.3}Mécanisme d'Attention de Bahdanau}{8}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Motivation}{8}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Calcul des Scores d'Attention}{8}{subsection.3.3.2}%
+\contentsline {subsection}{\numberline {3.3.3}Normalisation par Softmax}{8}{subsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.3.4}Vecteur de Contexte}{9}{subsection.3.3.4}%
+\contentsline {section}{\numberline {3.4}Détection d'Objets : YOLO}{9}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Paradigme One-Stage}{9}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Évolution de la Famille YOLO}{9}{subsection.3.4.2}%
+\contentsline {section}{\numberline {3.5}Paradigme Encoder-Decoder}{9}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}Décodage par Beam Search}{9}{subsection.3.5.1}%
+\contentsline {chapter}{\numberline {4}Conception et Architecture}{11}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Architecture Globale du Système}{11}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Vue d'Ensemble}{11}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Responsabilités des Couches}{11}{subsection.4.1.2}%
+\contentsline {section}{\numberline {4.2}Pipeline de Traitement des Images}{12}{section.4.2}%
+\contentsline {subsection}{\numberline {4.2.1}Flux de Données}{12}{subsection.4.2.1}%
+\contentsline {section}{\numberline {4.3}Architecture Detection-Guided Captioning}{12}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Principe de Fusion}{12}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Mécanisme d'Intégration}{12}{subsection.4.3.2}%
+\contentsline {section}{\numberline {4.4}Architecture de l'Application Mobile}{13}{section.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Organisation en Couches}{13}{subsection.4.4.1}%
+\contentsline {subsection}{\numberline {4.4.2}Pattern Service Layer}{13}{subsection.4.4.2}%
+\contentsline {section}{\numberline {4.5}Pipeline d'Entraînement}{13}{section.4.5}%
+\contentsline {subsection}{\numberline {4.5.1}Environnement Kaggle}{13}{subsection.4.5.1}%
+\contentsline {subsection}{\numberline {4.5.2}Flux d'Entraînement}{14}{subsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.5.3}Hyperparamètres d'Entraînement}{14}{subsection.4.5.3}%
+\contentsline {section}{\numberline {4.6}Diagramme de Séquence}{14}{section.4.6}%
+\contentsline {chapter}{\numberline {5}Implémentation et Résultats}{16}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Stack Technique}{16}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Technologies Utilisées}{16}{subsection.5.1.1}%
+\contentsline {subsubsection}{\numberline {5.1.1.1}Flutter}{16}{subsubsection.5.1.1.1}%
+\contentsline {subsubsection}{\numberline {5.1.1.2}FastAPI}{16}{subsubsection.5.1.1.2}%
+\contentsline {subsubsection}{\numberline {5.1.1.3}Python}{17}{subsubsection.5.1.1.3}%
+\contentsline {subsubsection}{\numberline {5.1.1.4}PyTorch}{17}{subsubsection.5.1.1.4}%
+\contentsline {subsubsection}{\numberline {5.1.1.5}YOLO (Ultralytics)}{17}{subsubsection.5.1.1.5}%
+\contentsline {subsubsection}{\numberline {5.1.1.6}Firebase}{18}{subsubsection.5.1.1.6}%
+\contentsline {subsection}{\numberline {5.1.2}Dépendances Backend}{18}{subsection.5.1.2}%
+\contentsline {section}{\numberline {5.2}Interfaces Utilisateur}{18}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Écran d'Accueil}{19}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Écran de Détection d'Objets}{20}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Écran de Génération de Légende}{21}{subsection.5.2.3}%
+\contentsline {subsection}{\numberline {5.2.4}Écran d'Analyse Combinée}{22}{subsection.5.2.4}%
+\contentsline {subsection}{\numberline {5.2.5}Écran Historique}{23}{subsection.5.2.5}%
+\contentsline {section}{\numberline {5.3}Résultats Expérimentaux}{24}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Scores BLEU}{24}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Courbes d'Apprentissage}{25}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Analyse du Surapprentissage}{25}{subsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.3.4}Exemples de Prédictions}{26}{subsection.5.3.4}%
+\contentsline {subsection}{\numberline {5.3.5}Visualisation de l'Attention}{26}{subsection.5.3.5}%
+\contentsline {subsection}{\numberline {5.3.6}Performances d'Inférence}{27}{subsection.5.3.6}%
+\contentsline {section}{\numberline {5.4}Comparaison avec l'État de l'Art}{28}{section.5.4}%
+\contentsline {chapter}{\numberline {6}Conclusion et Perspectives}{29}{chapter.6}%

@@ -1,0 +1,33 @@
+\babel@toc {french}{}\relax 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Structure d'un module Inception -- traitement parallèle multi-échelle}}{6}{figure.caption.14}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Architecture complète d'InceptionV3}}{6}{figure.caption.15}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Architecture trois couches du système AI Vision}}{11}{figure.caption.22}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Pipeline de traitement d'une requête d'analyse}}{12}{figure.caption.24}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Pipeline Detection-Guided Captioning}}{12}{figure.caption.25}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Architecture en couches de l'application Flutter}}{13}{figure.caption.26}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Pipeline d'entraînement sur Kaggle}}{14}{figure.caption.28}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Diagramme de séquence pour une analyse combinée}}{14}{figure.caption.30}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Logo Flutter}}{16}{figure.caption.33}%
+\contentsline {figure}{\numberline {5.2}{\ignorespaces Logo FastAPI}}{16}{figure.caption.34}%
+\contentsline {figure}{\numberline {5.3}{\ignorespaces Logo Python}}{17}{figure.caption.35}%
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Logo PyTorch}}{17}{figure.caption.36}%
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Logo YOLO}}{17}{figure.caption.37}%
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Logo Firebase}}{18}{figure.caption.38}%
+\contentsline {figure}{\numberline {5.7}{\ignorespaces Interface d'accueil de l'application AI Vision}}{19}{figure.caption.40}%
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Interface de détection d'objets en temps réel}}{20}{figure.caption.41}%
+\contentsline {figure}{\numberline {5.9}{\ignorespaces Interface de génération de légende}}{21}{figure.caption.42}%
+\contentsline {figure}{\numberline {5.10}{\ignorespaces Interface d'analyse combinée (Detection-Guided)}}{22}{figure.caption.43}%
+\contentsline {figure}{\numberline {5.11}{\ignorespaces Interface de l'historique Firebase}}{23}{figure.caption.44}%
+\contentsline {figure}{\numberline {5.12}{\ignorespaces Évolution des scores BLEU au cours de l'entraînement}}{24}{figure.caption.45}%
+\contentsline {figure}{\numberline {5.13}{\ignorespaces Courbes de perte (loss) d'entraînement et de validation}}{25}{figure.caption.46}%
+\contentsline {figure}{\numberline {5.14}{\ignorespaces Analyse comparative train vs validation}}{25}{figure.caption.47}%
+\contentsline {figure}{\numberline {5.15}{\ignorespaces Exemples de légendes générées vs références}}{26}{figure.caption.48}%
+\contentsline {figure}{\numberline {5.16}{\ignorespaces Poids d'attention pour le premier exemple}}{26}{figure.caption.49}%
+\contentsline {figure}{\numberline {5.17}{\ignorespaces Poids d'attention pour le deuxième exemple}}{27}{figure.caption.50}%
+\contentsline {figure}{\numberline {5.18}{\ignorespaces Poids d'attention pour le troisième exemple}}{27}{figure.caption.51}%
+\addvspace {10\p@ }

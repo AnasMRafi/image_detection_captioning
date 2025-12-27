@@ -1,0 +1,399 @@
+% ============================================================================
+% CHAPITRE 5 : IMPLÉMENTATION ET RÉSULTATS
+% ============================================================================
+
+\chapter{Implémentation et Résultats}
+
+\section*{Introduction}
+Ce chapitre a pour objectif de présenter les détails d'implémentation du système AI Vision. Nous y exposons le stack technique retenu, les interfaces utilisateur développées, et analysons les résultats expérimentaux obtenus.
+
+\section{Stack Technique}
+
+\subsection{Technologies Utilisées}
+
+Les technologies suivantes ont été sélectionnées pour implémenter le système AI Vision.
+
+\subsubsection{Flutter}
+
+Flutter est un SDK open-source créé par Google (2017) permettant de développer des applications natives iOS, Android et Web à partir d'une base de code unique en Dart. Il utilise le moteur graphique Skia pour un rendu natif.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2.5cm]{logos/flutter.png}
+\caption{Logo Flutter}
+\label{fig:logo_flutter}
+\end{figure}
+
+\textbf{Justification du choix :}
+\begin{itemize}
+    \item Développement cross-platform réduisant temps et coûts
+    \item Performances natives comparables à Swift/Kotlin
+    \item Hot reload accélérant le cycle de développement
+    \item Écosystème riche (pub.dev) avec intégrations caméra et Firebase
+\end{itemize}
+
+\subsubsection{FastAPI}
+
+FastAPI est un framework web Python moderne (2018) pour la construction d'APIs REST. Basé sur Starlette et Pydantic, il offre des performances comparables à Node.js avec validation automatique des données.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2.5cm]{logos/fastapi.png}
+\caption{Logo FastAPI}
+\label{fig:logo_fastapi}
+\end{figure}
+
+\textbf{Justification du choix :}
+\begin{itemize}
+    \item Support asynchrone natif pour requêtes concurrentes
+    \item Documentation Swagger UI générée automatiquement
+    \item Validation robuste via Pydantic
+    \item Intégration transparente avec PyTorch
+\end{itemize}
+
+\subsubsection{Python}
+
+Python est un langage interprété multi-paradigme créé par Guido van Rossum (1991). Dominant en IA et data science grâce à son écosystème (NumPy, PyTorch, TensorFlow).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2.5cm]{logos/python.png}
+\caption{Logo Python}
+\label{fig:logo_python}
+\end{figure}
+
+\textbf{Justification du choix :}
+\begin{itemize}
+    \item Écosystème ML/DL le plus riche et mature
+    \item Syntaxe claire accélérant le prototypage
+    \item Communauté massive et support abondant
+    \item Interopérabilité C/C++ pour optimisations
+\end{itemize}
+
+\subsubsection{PyTorch}
+
+PyTorch est une bibliothèque de deep learning open-source de Meta AI (2016). Elle offre un graphe de calcul dynamique, des tenseurs GPU via CUDA, et l'autograd pour la différentiation.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2.5cm]{logos/pytorch.png}
+\caption{Logo PyTorch}
+\label{fig:logo_pytorch}
+\end{figure}
+
+\textbf{Justification du choix :}
+\begin{itemize}
+    \item Graphe dynamique facilitant le debugging
+    \item API Pythonique intuitive
+    \item Adoption massive en recherche académique
+    \item TorchVision fournit InceptionV3 pré-entraîné
+\end{itemize}
+
+\subsubsection{YOLO (Ultralytics)}
+
+YOLO (You Only Look Once) est une famille d'algorithmes de détection d'objets temps réel (2016). Ultralytics offre les versions v5 à v12 avec modèles pré-entraînés sur COCO (80 classes).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2.5cm]{logos/yolo.png}
+\caption{Logo YOLO}
+\label{fig:logo_yolo}
+\end{figure}
+
+\textbf{Justification du choix :}
+\begin{itemize}
+    \item Inférence temps réel ($<$30ms par image)
+    \item Précision élevée (mAP 53.9\% sur COCO)
+    \item API Python minimaliste (3 lignes de code)
+    \item 80 classes COCO pour enrichir les légendes
+\end{itemize}
+
+
+\newpage
+\subsubsection{Firebase}
+
+Firebase est une plateforme BaaS de Google (2014) offrant Firestore (base NoSQL temps réel), Authentication, et Cloud Storage avec SDKs natifs mobiles.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2.5cm]{logos/firebase.png}
+\caption{Logo Firebase}
+\label{fig:logo_firebase}
+\end{figure}
+
+\textbf{Justification du choix :}
+\begin{itemize}
+    \item SDK Flutter natif (cloud\_firestore)
+    \item Synchronisation temps réel automatique
+    \item Tier gratuit suffisant (1GB, 50K lectures/jour)
+    \item Pas de backend custom pour la persistance
+\end{itemize}
+
+\subsection{Dépendances Backend}
+
+\begin{table}[H]
+\centering
+\caption{Principales dépendances Python}
+\begin{tabular}{lp{8cm}}
+\toprule
+\textbf{Package} & \textbf{Rôle} \\
+\midrule
+torch & Framework de deep learning (tenseurs, autograd) \\
+torchvision & Transformations d'images, modèles pré-entraînés \\
+fastapi & Framework web asynchrone pour API REST \\
+uvicorn & Serveur ASGI haute performance \\
+ultralytics & Bibliothèque YOLO pour la détection d'objets \\
+pillow & Manipulation et prétraitement d'images \\
+\bottomrule
+\end{tabular}
+\label{tab:dependencies}
+\end{table}
+
+\section{Interfaces Utilisateur}
+
+L'application comprend cinq écrans principaux. Les captures d'écran suivantes illustrent l'interface implémentée.
+
+\newpage
+\subsection{Écran d'Accueil}
+
+L'écran d'accueil présente les quatre fonctionnalités principales de l'application sous forme de cartes interactives. Le design adopte un thème sombre avec des accents bleu et violet.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.37\textwidth]{resultats/screen_home.jpg}
+\caption{Interface d'accueil de l'application AI Vision}
+\label{fig:screen_home}
+\end{figure}
+
+\textbf{Caractéristiques} :
+\begin{itemize}
+    \item Thème sombre avec palette cohérente (Primary: \#3B82F6, Secondary: \#8B5CF6)
+    \item Animations d'entrée (flutter\_animate)
+    \item Bouton de configuration API en haut à droite
+\end{itemize}
+
+\newpage
+\subsection{Écran de Détection d'Objets}
+
+L'écran de détection affiche le flux caméra en temps réel avec les bounding boxes superposées. Le modèle YOLOv12 identifie les objets et affiche leurs labels avec les scores de confiance.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.37\textwidth]{resultats/screen_detection.jpg}
+\caption{Interface de détection d'objets en temps réel}
+\label{fig:screen_detection}
+\end{figure}
+
+\textbf{Fonctionnement} :
+\begin{itemize}
+    \item Capture de frames toutes les 200 ms
+    \item Envoi au serveur via DetectionService
+    \item CustomPainter pour dessiner les boxes
+    \item Slider de seuil de confiance (10\%-90\%)
+\end{itemize}
+
+\newpage
+\subsection{Écran de Génération de Légende}
+
+L'écran de captioning permet de sélectionner une image depuis la galerie ou la caméra, puis d'obtenir une description textuelle générée par le modèle CNN-LSTM avec attention.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.37\textwidth]{resultats/screen_captioning.jpg}
+\caption{Interface de génération de légende}
+\label{fig:screen_captioning}
+\end{figure}
+
+\textbf{Fonctionnement} :
+\begin{itemize}
+    \item Sélection d'image via galerie ou caméra (image\_picker)
+    \item Envoi au endpoint /caption pour inférence
+    \item Affichage de la légende générée avec animation
+    \item Option de sauvegarde dans Firebase Firestore
+\end{itemize}
+
+\newpage
+\subsection{Écran d'Analyse Combinée}
+
+L'écran d'analyse combinée utilise l'approche Detection-Guided, affichant à la fois la liste des objets détectés et une légende enrichie par ces informations sémantiques.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.37\textwidth]{resultats/screen_analysis.jpg}
+\caption{Interface d'analyse combinée (Detection-Guided)}
+\label{fig:screen_analysis}
+\end{figure}
+
+\textbf{Fonctionnement} :
+\begin{itemize}
+    \item Appel simultané aux endpoints /detect et /analyze
+    \item Affichage des objets détectés avec confiance
+    \item Légende enrichie par le contexte sémantique YOLO
+    \item Fusion des embeddings objets dans le décodeur LSTM
+\end{itemize}
+
+\newpage
+\subsection{Écran Historique}
+
+L'écran historique affiche la liste chronologique des analyses sauvegardées dans Firebase Firestore, avec les miniatures des images et les légendes générées.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.37\textwidth]{resultats/screen_history.jpg}
+\caption{Interface de l'historique Firebase}
+\label{fig:screen_history}
+\end{figure}
+
+\textbf{Caractéristiques} :
+\begin{itemize}
+    \item Liste scrollable avec StreamBuilder (temps réel)
+    \item Miniatures images encodées en Base64
+    \item Affichage des légendes et timestamps
+    \item Suppression par swipe ou bouton
+\end{itemize}
+
+\newpage
+\section{Résultats Expérimentaux}
+
+\subsection{Scores BLEU}
+
+Les scores BLEU mesurent la similarité entre les légendes générées et les références.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{../backend/models/bleu_scores.png}
+\caption{Évolution des scores BLEU au cours de l'entraînement}
+\label{fig:bleu_scores}
+\end{figure}
+
+\textbf{Interprétation} : Les scores BLEU montrent une convergence progressive. BLEU-1 atteint environ 0.55-0.60, ce qui est \textbf{cohérent avec les performances attendues} pour une architecture CNN-LSTM avec attention sur Flickr8k. BLEU-4, plus strict car il évalue les 4-grammes, oscille autour de 0.18-0.22. 
+
+Ces valeurs sont \textbf{comparables aux modèles de référence} ``Show, Attend and Tell'' (BLEU-4 ~0.24 sur Flickr8k), validant notre implémentation. L'écart s'explique par la taille limitée du dataset d'entraînement.
+
+\subsection{Courbes d'Apprentissage}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{../backend/models/training_curves.png}
+\caption{Courbes de perte (loss) d'entraînement et de validation}
+\label{fig:training_curves}
+\end{figure}
+
+\textbf{Interprétation} : La courbe de validation suit celle d'entraînement, indiquant une \textbf{bonne généralisation} sans surapprentissage majeur. La diminution parallèle des deux courbes montre que le modèle apprend des patterns généralisables plutôt que de mémoriser les données.
+
+Le plateau observé après ~15 epochs suggère que le modèle a atteint sa capacité d'apprentissage sur ce dataset. Des améliorations nécessiteraient un dataset plus large (COCO) ou une architecture plus puissante (Transformer).
+
+\subsection{Analyse du Surapprentissage}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{../backend/models/overfitting_analysis.png}
+\caption{Analyse comparative train vs validation}
+\label{fig:overfitting}
+\end{figure}
+
+\textbf{Interprétation} : L'écart entre les courbes train/val reste modéré, confirmant l'\textbf{efficacité des techniques de régularisation} :
+\begin{itemize}
+    \item Dropout (0.5) dans le décodeur
+    \item Early stopping (patience: 5 epochs)
+    \item Teacher forcing avec ratio décroissant
+\end{itemize}
+
+\subsection{Exemples de Prédictions}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{../backend/models/sample_predictions.png}
+\caption{Exemples de légendes générées vs références}
+\label{fig:sample_predictions}
+\end{figure}
+
+\textbf{Interprétation} : Le modèle capture correctement les \textbf{éléments principaux} des scènes (personnes, animaux, actions). Les erreurs typiques observées :
+\begin{itemize}
+    \item Confusions de genre (``man'' vs ``woman'')
+    \item Descriptions génériques pour les arrière-plans
+    \item Difficultés avec les objets partiellement occultés
+\end{itemize}
+
+Ces limitations sont \textbf{attendues} pour un modèle entraîné sur Flickr8k (8000 images) et reflètent les biais du dataset.
+
+\subsection{Visualisation de l'Attention}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{../backend/models/attention_viz_1.png}
+\caption{Poids d'attention pour le premier exemple}
+\label{fig:attention_1}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{../backend/models/attention_viz_2.png}
+\caption{Poids d'attention pour le deuxième exemple}
+\label{fig:attention_2}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{../backend/models/attention_viz_3.png}
+\caption{Poids d'attention pour le troisième exemple}
+\label{fig:attention_3}
+\end{figure}
+
+\textbf{Interprétation} : Les cartes d'attention démontrent que le mécanisme de Bahdanau \textbf{fonctionne comme prévu} :
+\begin{itemize}
+    \item Pour les noms concrets (``dog'', ``man''), l'attention se concentre sur l'objet correspondant
+    \item Pour les verbes (``running'', ``playing''), l'attention se disperse sur la zone d'action
+    \item Pour les mots fonctionnels (``a'', ``the''), l'attention est diffuse
+\end{itemize}
+
+Cette \textbf{interprétabilité} est un avantage majeur de l'architecture par rapport aux modèles boîte noire.
+
+\subsection{Performances d'Inférence}
+
+\begin{table}[H]
+\centering
+\caption{Benchmark d'inférence (Apple M3 Pro, MPS)}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Module} & \textbf{Temps Moyen} & \textbf{FPS Théorique} \\
+\midrule
+Captioning seul & ~200 ms & 5 FPS \\
+Detection seule & ~50 ms & 20 FPS \\
+\textbf{Combined Analysis} & \textbf{~260 ms} & \textbf{3.85 FPS} \\
+\bottomrule
+\end{tabular}
+\label{tab:inference_benchmark}
+\end{table}
+
+\textbf{Interprétation} : Le temps d'inférence combiné de ~260 ms est \textbf{acceptable pour une utilisation interactive} (pas de temps réel strict). Ce temps se décompose en :
+\begin{itemize}
+    \item ~50 ms : Détection YOLOv12
+    \item ~200 ms : Captioning (encodage + décodage beam search)
+    \item ~10 ms : Overhead (prétraitement, post-traitement)
+\end{itemize}
+
+La performance est \textbf{suffisante} pour le prototype fonctionnel actuel. Une optimisation serait nécessaire pour du temps réel continu (streaming vidéo).
+
+\section{Comparaison avec l'État de l'Art}
+
+\begin{table}[H]
+\centering
+\caption{Positionnement par rapport aux modèles de référence}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Modèle} & \textbf{BLEU-4} & \textbf{Attention} & \textbf{Année} \\
+\midrule
+Show and Tell & 0.183 & Non & 2015 \\
+Show, Attend and Tell & 0.243 & Soft & 2015 \\
+Adaptive Attention & 0.266 & Adaptive & 2017 \\
+\textbf{AI Vision (nôtre)} & \textbf{0.18-0.22} & \textbf{Bahdanau} & \textbf{2024} \\
+\bottomrule
+\end{tabular}
+\label{tab:sota_comparison}
+\end{table}
+
+\textbf{Analyse} : Notre implémentation atteint des performances comparables aux modèles classiques CNN-LSTM avec attention. L'écart avec les modèles plus récents (Transformers, VLMs) est attendu, ceux-ci nécessitant des ressources computationnelles significativement supérieures.
+
+\section*{Conclusion}
+En guise de conclusion, ce chapitre a présenté l'implémentation complète du système AI Vision et analysé les résultats expérimentaux. Les métriques obtenues (BLEU-1 de l'ordre de 0.55--0.60, temps d'inférence d'environ 260 ms) \textbf{valident l'applicabilité} du système pour un usage interactif. Les visualisations d'attention confirment le bon fonctionnement du mécanisme de Bahdanau, offrant une interprétabilité précieuse. Le chapitre suivant conclut le présent rapport.

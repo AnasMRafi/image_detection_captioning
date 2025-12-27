@@ -1,0 +1,345 @@
+% ============================================================================
+% CHAPITRE 4 : CONCEPTION ET ARCHITECTURE
+% Diagrammes améliorés avec meilleur espacement
+% ============================================================================
+\chapter{Conception et Architecture}
+\section*{Introduction}
+Ce chapitre a pour objectif de présenter la conception détaillée du système AI Vision. Nous exposons l'architecture globale, les pipelines de traitement, et les flux de données entre les différents composants.
+\section{Architecture Globale du Système}
+\subsection{Vue d'Ensemble}
+Le système adopte une architecture \textbf{client-serveur} distribuée, organisée en trois couches distinctes :
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    layer/.style={rectangle, draw=black!70, thick, fill=#1, minimum width=14cm, minimum height=2.2cm, rounded corners=5pt},
+    component/.style={rectangle, draw=blue!60, thick, fill=white, minimum width=1.6cm, minimum height=0.6cm, text centered, rounded corners=3pt, font=\tiny},
+    arrow/.style={-{Stealth[scale=1]}, thick, gray!70},
+    layerlabel/.style={font=\bfseries\tiny}
+]
+    % Couche Client
+    \node[layer=blue!8] (client) at (0,0) {};
+    \node[layerlabel] at (-5.5,0.5) {COUCHE CLIENT};
+    \node[font=\tiny, gray] at (-5.5,0.1) {Flutter / Dart};
+    
+    % Composants Client
+    \node[component] at (-2.5,-0.2) {Home};
+    \node[component] at (-0.7,-0.2) {Detection};
+    \node[component] at (1.1,-0.2) {Captioning};
+    \node[component] at (2.9,-0.2) {History};
+    \node[component, fill=yellow!20] at (5,-0.2) {ApiService};
+    
+    % Couche Serveur
+    \node[layer=green!8] (server) at (0,-3.2) {};
+    \node[layerlabel] at (-5.5,-2.7) {COUCHE SERVEUR};
+    \node[font=\tiny, gray] at (-5.5,-3.1) {FastAPI + PyTorch};
+    
+    % Composants Serveur
+    \node[component, fill=orange!15] at (-2.5,-3.4) {/caption};
+    \node[component, fill=orange!15] at (-0.7,-3.4) {/detect};
+    \node[component, fill=orange!15] at (1.1,-3.4) {/analyze};
+    \node[component, fill=purple!15] at (3.1,-3.4) {CNN-LSTM};
+    \node[component, fill=purple!15] at (5,-3.4) {YOLO};
+    
+    % Couche Cloud
+    \node[layer=yellow!8, minimum height=1.6cm] (cloud) at (0,-5.8) {};
+    \node[layerlabel] at (-5.5,-5.5) {COUCHE CLOUD};
+    \node[font=\tiny, gray] at (-5.5,-5.9) {Firebase};
+    
+    \node[component, fill=red!10] at (0,-5.8) {Firestore};
+    
+    % Flèches
+    \draw[arrow] (0,-1.1) -- node[right, font=\tiny] {HTTP} (0,-2.1);
+    \draw[arrow] (7,0) -- (7.5,0) -- node[right, font=\tiny] {SDK} (7.5,-5.8) -- (7,-5.8);
+    
+\end{tikzpicture}
+\caption{Architecture trois couches du système AI Vision}
+\label{fig:architecture_global}
+\end{figure}
+\subsection{Responsabilités des Couches}
+\begin{table}[H]
+\centering
+\caption{Responsabilités des couches architecturales}
+\begin{tabular}{lp{9cm}}
+\toprule
+\textbf{Couche} & \textbf{Responsabilités} \\
+\midrule
+Client & Capture d'images, affichage des résultats, navigation \\
+Serveur & Prétraitement, inférence deep learning, sérialisation \\
+Cloud & Persistance de l'historique, synchronisation \\
+\bottomrule
+\end{tabular}
+\label{tab:layers}
+\end{table}
+\section{Pipeline de Traitement des Images}
+\subsection{Flux de Données}
+Le traitement d'une requête d'analyse suit le flux illustré ci-dessous :
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance=0.4cm,
+    stepbox/.style={rectangle, draw=blue!60, thick, fill=blue!10, minimum width=2.3cm, minimum height=0.9cm, text centered, rounded corners=3pt, font=\scriptsize},
+    arrow/.style={-{Stealth[scale=0.9]}, thick, blue!60}
+]
+    % Ligne 1
+    \node[stepbox, fill=green!15] (s1) {1. Capture};
+    \node[stepbox, right=0.5cm of s1] (s2) {2. Encodage};
+    \node[stepbox, right=0.5cm of s2] (s3) {3. Envoi HTTP};
+    \node[stepbox, right=0.5cm of s3] (s4) {4. Prétraitement};
+    
+    % Ligne 2
+    \node[stepbox, below=0.8cm of s1, fill=orange!15] (s5) {5. Inférence};
+    \node[stepbox, right=0.5cm of s5] (s6) {6. Formatage};
+    \node[stepbox, right=0.5cm of s6] (s7) {7. Réponse};
+    \node[stepbox, right=0.5cm of s7, fill=green!15] (s8) {8. Affichage};
+    
+    % Flèches
+    \draw[arrow] (s1) -- (s2);
+    \draw[arrow] (s2) -- (s3);
+    \draw[arrow] (s3) -- (s4);
+    \draw[arrow] (s4.south) -- ++(0,-0.25) -| (s5.north);
+    \draw[arrow] (s5) -- (s6);
+    \draw[arrow] (s6) -- (s7);
+    \draw[arrow] (s7) -- (s8);
+    
+\end{tikzpicture}
+\caption{Pipeline de traitement d'une requête d'analyse}
+\label{fig:pipeline_flow}
+\end{figure}
+\section{Architecture Detection-Guided Captioning}
+\subsection{Principe de Fusion}
+L'approche \textbf{Detection-Guided Captioning} enrichit le contexte du décodeur avec les informations extraites par le détecteur d'objets :
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    block/.style={rectangle, draw=blue!60, thick, fill=blue!10, minimum width=2.5cm, minimum height=0.8cm, text centered, rounded corners=3pt, font=\tiny},
+    arrow/.style={-{Stealth[scale=0.9]}, thick}
+]
+    % Input - centré en haut
+    \node[block, fill=green!20] (input) at (0,0) {Image 299x299};
+    
+    % Deux branches
+    \node[block, fill=orange!20] (yolo) at (-3,-1.8) {YOLOv12};
+    \node[block, fill=blue!20] (cnn) at (3,-1.8) {InceptionV3};
+    
+    % Outputs des branches
+    \node[block] (labels) at (-3,-3.2) {Labels COCO};
+    \node[block, fill=yellow!20] (embed) at (-3,-4.6) {Embedding};
+    
+    \node[block] (features) at (3,-3.2) {Features 64x2048};
+    
+    % Fusion
+    \node[block, fill=purple!20, minimum width=3cm] (fusion) at (0,-5.5) {Fusion};
+    
+    % Decoder
+    \node[block, minimum width=3cm] (lstm) at (0,-7) {LSTM + Attention};
+    
+    % Output
+    \node[block, fill=green!20] (output) at (0,-8.5) {Légende};
+    
+    % Flèches
+    \draw[arrow] (input) -- (yolo);
+    \draw[arrow] (input) -- (cnn);
+    \draw[arrow] (yolo) -- (labels);
+    \draw[arrow] (labels) -- (embed);
+    \draw[arrow] (cnn) -- (features);
+    \draw[arrow] (embed) -- (fusion);
+    \draw[arrow] (features) -- ++(0,-1.5) -| (fusion);
+    \draw[arrow] (fusion) -- (lstm);
+    \draw[arrow] (lstm) -- (output);
+    
+    % Attention label
+    \node[font=\tiny, gray] at (4,-5) {Attention};
+    \draw[arrow, dashed, gray] (features) -- ++(0,-3) -- (lstm);
+    
+\end{tikzpicture}
+\caption{Pipeline Detection-Guided Captioning}
+\label{fig:detection_guided}
+\end{figure}
+\subsection{Mécanisme d'Intégration}
+L'intégration des objets détectés s'effectue selon les étapes suivantes :
+\begin{enumerate}
+    \item \textbf{Détection} : YOLOv12 identifie les objets (classes COCO 0--79)
+    \item \textbf{Embedding} : Conversion en vecteurs denses (128 dimensions)
+    \item \textbf{Agrégation} : Moyenne des embeddings
+    \item \textbf{Projection} : Transformation vers 512 dimensions
+    \item \textbf{Fusion} : Addition à l'état initial $h_0$ du décodeur
+\end{enumerate}
+Formellement, l'état initial modifié s'écrit :
+\begin{equation}
+    h_0' = h_0 + W \times \text{moyenne}(\text{embeddings objets})
+\end{equation}
+\textbf{Explication des symboles :}
+\begin{itemize}
+    \item $h_0'$ : nouvel état initial du décodeur LSTM (après fusion)
+    \item $h_0$ : état initial original (calculé depuis les features CNN)
+    \item $W$ : matrice de projection (128 $\rightarrow$ 512)
+    \item $\text{moyenne}(\text{embeddings objets})$ : moyenne des vecteurs représentant les objets détectés
+\end{itemize}
+\section{Architecture de l'Application Mobile}
+\subsection{Organisation en Couches}
+L'application Flutter adopte une architecture en couches :
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    layer/.style={rectangle, draw=black!50, thick, fill=#1, minimum width=10cm, minimum height=1.6cm, rounded corners=3pt},
+    component/.style={rectangle, draw=blue!50, thick, fill=white, minimum width=1.5cm, minimum height=0.6cm, text centered, rounded corners=2pt, font=\tiny},
+    arrow/.style={-{Stealth[scale=0.8]}, thick}
+]
+    % Couche UI
+    \node[layer=blue!8] (ui) at (0,0) {};
+    \node[font=\bfseries\tiny] at (-4,0) {UI};
+    
+    % Composants UI - positions absolues
+    \node[component] at (-2.5,0) {Home};
+    \node[component] at (-1,0) {Detection};
+    \node[component] at (0.5,0) {Captioning};
+    \node[component] at (2,0) {Analysis};
+    \node[component] at (3.5,0) {History};
+    
+    % Couche Services
+    \node[layer=green!8] (services) at (0,-2.2) {};
+    \node[font=\bfseries\tiny] at (-4,-2.2) {Services};
+    
+    % Composants Services - positions absolues
+    \node[component, fill=yellow!15] at (-1.5,-2.2) {ApiService};
+    \node[component, fill=yellow!15] at (0.5,-2.2) {FirebaseService};
+    \node[component, fill=yellow!15] at (2.8,-2.2) {DetectionService};
+    
+    % Couche Modèles
+    \node[layer=orange!8] (models) at (0,-4.4) {};
+    \node[font=\bfseries\tiny] at (-4,-4.4) {Modèles};
+    
+    % Composants Modèles - positions absolues
+    \node[component, fill=red!10] at (-1.5,-4.4) {CaptionResult};
+    \node[component, fill=red!10] at (0.5,-4.4) {DetectionResult};
+    \node[component, fill=red!10] at (2.5,-4.4) {HistoryEntry};
+    
+    % Flèches
+    \draw[arrow] (0,-0.8) -- (0,-1.4);
+    \draw[arrow] (0,-3) -- (0,-3.6);
+    
+\end{tikzpicture}
+\caption{Architecture en couches de l'application Flutter}
+\label{fig:flutter_architecture}
+\end{figure}
+\subsection{Pattern Service Layer}
+L'application utilise le pattern \textbf{Service Layer} pour isoler la logique d'accès aux données :
+\begin{table}[H]
+\centering
+\caption{Services de l'application}
+\begin{tabular}{lp{8cm}}
+\toprule
+\textbf{Service} & \textbf{Responsabilités} \\
+\midrule
+\texttt{ApiService} & Communication HTTP avec le serveur FastAPI \\
+\texttt{FirebaseService} & Persistance de l'historique dans Firestore \\
+\texttt{DetectionService} & Envoi périodique des frames caméra \\
+\bottomrule
+\end{tabular}
+\label{tab:services}
+\end{table}
+\section{Pipeline d'Entraînement}
+\subsection{Environnement Kaggle}
+L'entraînement des modèles a été réalisé sur la plateforme \textbf{Kaggle}, exploitant des GPU NVIDIA Tesla P100/T4.
+\subsection{Flux d'Entraînement}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    block/.style={rectangle, draw=blue!60, thick, fill=blue!10, minimum width=2cm, minimum height=0.7cm, text centered, rounded corners=3pt, font=\tiny},
+    arrow/.style={-{Stealth[scale=0.9]}, thick}
+]
+    % Ligne 1 - Prétraitement
+    \node[block, fill=green!20] (data) at (0,0) {Flickr8k};
+    \node[block] (tok) at (2.5,0) {Tokenization};
+    \node[block] (resize) at (5,0) {Resize 299};
+    \node[block] (norm) at (7.5,0) {Normalize};
+    
+    % Ligne 2 - Training
+    \node[block, fill=orange!20] (fwd) at (0,-2) {Forward};
+    \node[block] (loss) at (2.5,-2) {CrossEntropy};
+    \node[block] (bwd) at (5,-2) {Backward};
+    \node[block] (opt) at (7.5,-2) {Adam};
+    
+    % Ligne 3 - Output
+    \node[block, fill=red!20] (weights) at (2.5,-4) {Poids .pth};
+    \node[block, fill=red!20] (vocab) at (5,-4) {Vocab .pkl};
+    
+    % Flèches
+    \draw[arrow] (data) -- (tok);
+    \draw[arrow] (tok) -- (resize);
+    \draw[arrow] (resize) -- (norm);
+    \draw[arrow] (norm) -- ++(0,-0.7) -| (fwd);
+    \draw[arrow] (fwd) -- (loss);
+    \draw[arrow] (loss) -- (bwd);
+    \draw[arrow] (bwd) -- (opt);
+    \draw[arrow, dashed] (opt) -- ++(0,-0.6) -| (fwd);
+    \draw[arrow] (loss) -- (weights);
+    \draw[arrow] (tok) -- ++(0,-3) -- (vocab);
+    
+\end{tikzpicture}
+\caption{Pipeline d'entraînement sur Kaggle}
+\label{fig:training_pipeline}
+\end{figure}
+\subsection{Hyperparamètres d'Entraînement}
+\begin{table}[H]
+\centering
+\caption{Hyperparamètres du modèle de captioning}
+\begin{tabular}{ll}
+\toprule
+\textbf{Paramètre} & \textbf{Valeur} \\
+\midrule
+Dimension encodeur & 2048 \\
+Dimension décodeur & 512 \\
+Dimension attention & 512 \\
+Dimension embedding & 256 \\
+Taille vocabulaire & $\sim$5000 \\
+Taux d'apprentissage & $1 \times 10^{-4}$ \\
+Batch size & 32 \\
+Nombre d'époques & 40 \\
+Dropout & 0.5 \\
+\bottomrule
+\end{tabular}
+\label{tab:hyperparams}
+\end{table}
+\section{Diagramme de Séquence}
+Le flux d'une requête d'analyse combinée :
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance=0.3cm,
+    actor/.style={rectangle, draw=blue!60, thick, fill=blue!10, minimum width=1.6cm, minimum height=0.6cm, text centered, font=\scriptsize},
+    arrow/.style={-{Stealth[scale=0.8]}, thick},
+    darrow/.style={-{Stealth[scale=0.8]}, thick, dashed}
+]
+    % Acteurs
+    \node[actor] (user) {User};
+    \node[actor, right=1.4cm of user] (flutter) {Flutter};
+    \node[actor, right=1.4cm of flutter] (api) {FastAPI};
+    \node[actor, right=1.4cm of api] (model) {PyTorch};
+    \node[actor, right=1.4cm of model] (fb) {Firebase};
+    
+    % Lignes de vie
+    \draw[thick, dashed, gray!50] (user.south) -- ++(0,-5);
+    \draw[thick, dashed, gray!50] (flutter.south) -- ++(0,-5);
+    \draw[thick, dashed, gray!50] (api.south) -- ++(0,-5);
+    \draw[thick, dashed, gray!50] (model.south) -- ++(0,-5);
+    \draw[thick, dashed, gray!50] (fb.south) -- ++(0,-5);
+    
+    % Messages
+    \draw[arrow] ([yshift=-0.8cm]user.south) -- node[above, font=\tiny] {Capture} ([yshift=-0.8cm]flutter.south);
+    \draw[arrow] ([yshift=-1.4cm]flutter.south) -- node[above, font=\tiny] {POST} ([yshift=-1.4cm]api.south);
+    \draw[arrow] ([yshift=-2cm]api.south) -- node[above, font=\tiny] {Infer} ([yshift=-2cm]model.south);
+    \draw[darrow] ([yshift=-2.8cm]model.south) -- node[above, font=\tiny] {Result} ([yshift=-2.8cm]api.south);
+    \draw[darrow] ([yshift=-3.4cm]api.south) -- node[above, font=\tiny] {JSON} ([yshift=-3.4cm]flutter.south);
+    \draw[darrow] ([yshift=-4cm]flutter.south) -- node[above, font=\tiny] {Display} ([yshift=-4cm]user.south);
+    \draw[arrow] ([yshift=-4.6cm]flutter.south) -- node[above, font=\tiny] {Save} ([yshift=-4.6cm]fb.south);
+    
+    % Temps
+    \node[font=\tiny, gray] at ([xshift=0.7cm, yshift=-2.4cm]model.south) {$\sim$260ms};
+    
+\end{tikzpicture}
+\caption{Diagramme de séquence pour une analyse combinée}
+\label{fig:sequence_diagram}
+\end{figure}
+\section*{Conclusion}
+En guise de conclusion, ce chapitre a présenté la conception détaillée du système AI Vision. Nous avons exposé l'architecture trois couches, le pipeline Detection-Guided Captioning, l'organisation de l'application mobile, et le flux d'entraînement sur Kaggle. Le chapitre suivant présente les détails d'implémentation et les résultats expérimentaux.

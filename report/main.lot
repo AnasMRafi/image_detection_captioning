@@ -1,0 +1,22 @@
+\babel@toc {french}{}\relax 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {2.1}{\ignorespaces Fonctionnalités du système proposé}}{2}{table.caption.7}%
+\contentsline {table}{\numberline {2.2}{\ignorespaces Stack technique du système}}{3}{table.caption.8}%
+\contentsline {table}{\numberline {2.3}{\ignorespaces Spécifications des modèles de deep learning}}{3}{table.caption.9}%
+\contentsline {table}{\numberline {2.4}{\ignorespaces Spécification des endpoints REST}}{3}{table.caption.10}%
+\contentsline {table}{\numberline {2.5}{\ignorespaces Objectifs de performance}}{4}{table.caption.11}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces Caractéristiques techniques d'InceptionV3}}{7}{table.caption.16}%
+\contentsline {table}{\numberline {3.2}{\ignorespaces Portes du LSTM et leurs rôles}}{7}{table.caption.17}%
+\contentsline {table}{\numberline {3.3}{\ignorespaces Évolution de l'architecture YOLO (versions récentes, modèles X)}}{9}{table.caption.18}%
+\contentsline {table}{\numberline {3.4}{\ignorespaces Comparaison des stratégies de décodage}}{9}{table.caption.19}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4.1}{\ignorespaces Responsabilités des couches architecturales}}{11}{table.caption.23}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Services de l'application}}{13}{table.caption.27}%
+\contentsline {table}{\numberline {4.3}{\ignorespaces Hyperparamètres du modèle de captioning}}{14}{table.caption.29}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {5.1}{\ignorespaces Principales dépendances Python}}{18}{table.caption.39}%
+\contentsline {table}{\numberline {5.2}{\ignorespaces Benchmark d'inférence (Apple M3 Pro, MPS)}}{27}{table.caption.52}%
+\contentsline {table}{\numberline {5.3}{\ignorespaces Positionnement par rapport aux modèles de référence}}{28}{table.caption.53}%
+\addvspace {10\p@ }

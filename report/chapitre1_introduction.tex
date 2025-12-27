@@ -1,0 +1,18 @@
+% ============================================================================
+% CHAPITRE 1 : INTRODUCTION GÉNÉRALE
+% Style Wafacash - Paragraphes fluides SANS sections
+% ============================================================================
+
+\chapter{Introduction Générale}
+
+Le domaine de l'intelligence artificielle connaît une croissance exponentielle, portée par les avancées significatives des architectures de réseaux de neurones profonds. Parmi les applications émergentes, la génération automatique de descriptions textuelles à partir d'images — désignée par le terme anglais \textit{Image Captioning} — constitue un défi technique majeur situé à l'intersection de la vision par ordinateur et du traitement du langage naturel.
+
+Ce projet s'inscrit dans le cadre d'un stage de fin d'études dont l'objectif est la conception et l'implémentation d'un système complet de vision-langage. Le défi consiste à maîtriser l'ensemble du cycle de vie d'une application de Deep Learning, depuis l'entraînement des modèles jusqu'au déploiement sur une plateforme mobile fonctionnelle.
+
+L'intérêt académique de ce travail réside dans l'intégration cohérente de plusieurs composants d'architectures avancées : un \textbf{encodeur visuel} (réseau convolutif) pour l'extraction de caractéristiques d'images, un \textbf{décodeur séquentiel} (réseau récurrent) pour la génération de texte, un \textbf{mécanisme d'attention} pour la focalisation dynamique sur les régions pertinentes, un \textbf{détecteur d'objets} pour l'enrichissement sémantique, et une \textbf{architecture distribuée} pour le déploiement mobile.
+
+La conception d'un système d'Image Captioning soulève plusieurs défis techniques interconnectés. Comment extraire des caractéristiques visuelles suffisamment riches pour capturer la sémantique d'une scène ? Comment produire des descriptions textuelles grammaticalement correctes et contextuellement pertinentes ? Comment permettre au modèle de focaliser son attention sur les régions appropriées de l'image lors de la génération de chaque mot ? Comment combiner efficacement les informations de détection d'objets avec le pipeline de génération de légendes ? Et enfin, comment rendre ce système accessible via une application mobile performante ?
+
+Nous nous proposons d'implémenter un modèle \textbf{Encoder-Decoder} complet pour l'Image Captioning, intégrant le mécanisme d'\textbf{attention de Bahdanau}. Ce modèle est capable d'encoder une image en représentation vectorielle via un réseau convolutif pré-entraîné, de décoder cette représentation en une séquence de mots via un réseau récurrent, et d'exploiter l'attention pour pondérer dynamiquement les caractéristiques visuelles. Nous combinons également ce module avec un détecteur d'objets \textbf{YOLOv12} afin de créer une approche de \textbf{Detection-Guided Captioning}, enrichissant le contexte sémantique disponible pour le générateur de légendes.
+
+Le présent rapport est structuré en six chapitres. Après cette introduction générale, le deuxième chapitre définit le périmètre technique et les spécifications du projet. Le troisième chapitre expose les fondements théoriques des architectures de deep learning utilisées. Le quatrième chapitre détaille la conception et l'architecture technique du système. Le cinquième chapitre présente l'implémentation et analyse les résultats expérimentaux. Enfin, le sixième chapitre conclut le rapport et ouvre sur les perspectives d'évolution.

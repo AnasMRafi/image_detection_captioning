@@ -1,0 +1,41 @@
+% ============================================================================
+% RÉSUMÉ - Style Wafacash (paragraphes fluides sans sections)
+% ============================================================================
+
+\chapter*{Résumé}
+\addcontentsline{toc}{chapter}{Résumé}
+
+L'essor des technologies de vision par ordinateur et de traitement du langage naturel ouvre de nouvelles perspectives pour le développement d'applications intelligentes. La génération automatique de descriptions textuelles à partir d'images, connue sous le terme \textit{Image Captioning}, représente un défi technique majeur situé à l'intersection de ces deux domaines. Ce projet s'inscrit dans le cadre d'un stage de fin d'études visant à concevoir et implémenter un système complet de vision-langage.
+
+La conception d'un tel système soulève plusieurs défis techniques. D'une part, l'extraction de caractéristiques visuelles pertinentes nécessite l'utilisation de réseaux de neurones convolutifs profonds. D'autre part, la génération de séquences textuelles cohérentes requiert des architectures récurrentes sophistiquées. La question centrale est la suivante : comment intégrer efficacement ces composants au sein d'une application mobile fonctionnelle, tout en maintenant des performances d'inférence acceptables pour une utilisation interactive ?
+
+Nous proposons une architecture client-serveur privilégiant la précision via l'exploitation de modèles massifs inaccessibles aux processeurs mobiles. Le système repose sur un pipeline \textbf{Encoder-Decoder} combinant un encodeur \textbf{InceptionV3} et un décodeur \textbf{LSTM} enrichi du mécanisme d'\textbf{attention de Bahdanau}. Cette architecture est complétée par un module de détection d'objets \textbf{YOLOv12} permettant une approche de \textbf{Detection-Guided Captioning}. L'entraînement des modèles a été réalisé sur la plateforme \textbf{Kaggle} exploitant des GPU NVIDIA Tesla, avant déploiement sur un serveur d'inférence \textbf{FastAPI}. L'interface mobile est développée en \textbf{Flutter} avec persistance \textbf{Firebase Firestore}.
+
+Les expérimentations démontrent des performances conformes aux modèles de référence de même architecture, avec des scores \textbf{BLEU-1} de l'ordre de 0.55--0.60 et des temps d'inférence d'environ \textbf{260 ms} sur accélérateur Apple Silicon. Les visualisations d'attention confirment le bon fonctionnement du mécanisme de focalisation dynamique, révélant les régions visuelles exploitées pour la génération de chaque mot.
+
+\vspace{0.8cm}
+
+% \textbf{Mots-clés :} Image Captioning, CNN-LSTM, Attention de Bahdanau, YOLOv12, Flutter, FastAPI, Deep Learning.
+
+\newpage
+
+% ============================================================================
+% ABSTRACT (English) - Style paragraphes fluides
+% ============================================================================
+
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+The rise of computer vision and natural language processing technologies opens new perspectives for developing intelligent applications. Automatic generation of textual descriptions from images, known as \textit{Image Captioning}, represents a major technical challenge at the intersection of these two fields. This project is part of an end-of-studies internship aimed at designing and implementing a complete vision-language system.
+
+The design of such a system raises several technical challenges. On one hand, extracting relevant visual features requires the use of deep convolutional neural networks. On the other hand, generating coherent textual sequences requires sophisticated recurrent architectures. The central question is: how to effectively integrate these components within a functional mobile application while maintaining acceptable inference performance for interactive use?
+
+We propose a client-server architecture favoring precision through the exploitation of massive models inaccessible to mobile processors. The system relies on an \textbf{Encoder-Decoder} pipeline combining an \textbf{InceptionV3} encoder and an \textbf{LSTM} decoder enhanced with the \textbf{Bahdanau attention} mechanism. This architecture is complemented by a \textbf{YOLOv12} object detection module enabling a \textbf{Detection-Guided Captioning} approach. Model training was performed on the \textbf{Kaggle} platform using NVIDIA Tesla GPUs, before deployment on a \textbf{FastAPI} inference server. The mobile interface is developed in \textbf{Flutter} with \textbf{Firebase Firestore} persistence.
+
+Experiments demonstrate performance consistent with reference models of the same architecture, achieving \textbf{BLEU-1} scores around 0.55--0.60 with inference times of approximately \textbf{260 ms} on Apple Silicon accelerator. Attention visualizations confirm the proper functioning of the dynamic focusing mechanism, revealing the visual regions exploited for generating each word.
+
+\vspace{0.8cm}
+
+% \textbf{Keywords:} Image Captioning, CNN-LSTM, Bahdanau Attention, YOLOv12, Flutter, FastAPI, Deep Learning.
+
+\newpage

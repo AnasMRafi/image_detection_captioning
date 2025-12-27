@@ -42,7 +42,7 @@ backend/models.*
 # ====================
 # Report
 # ====================
-report/
+# report/
 
 # ====================
 # Backend

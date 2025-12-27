@@ -1,0 +1,16 @@
+% ============================================================================
+% CHAPITRE 6 : CONCLUSION ET PERSPECTIVES
+% Style Wafacash - Paragraphes fluides SANS sections
+% ============================================================================
+
+\chapter{Conclusion et Perspectives}
+
+Le projet AI Vision a permis d'atteindre l'ensemble des objectifs initialement fixés. Nous avons conçu et implémenté un modèle Encoder-Decoder complet, intégrant un encodeur InceptionV3, un décodeur LSTM, et le mécanisme d'attention de Bahdanau. Ce pipeline génère des légendes textuelles pertinentes à partir d'images arbitraires. L'approche Detection-Guided Captioning, combinant le détecteur YOLOv12 avec le générateur de légendes, enrichit le contexte sémantique et améliore la pertinence des descriptions. L'architecture client-serveur est pleinement opérationnelle, avec une application mobile Flutter intuitive et un serveur d'inférence FastAPI performant. L'historique des analyses est sauvegardé dans Firebase Firestore, offrant une synchronisation transparente.
+
+Les résultats expérimentaux valident les choix architecturaux avec des scores \textbf{BLEU-1} de l'ordre de 0.55--0.60 et des temps d'inférence d'environ \textbf{260 ms} sur accélérateur Apple Silicon. Ces performances sont conformes aux modèles de référence de même architecture (CNN-LSTM avec attention), validant la qualité de notre implémentation.
+
+Ce projet a permis la maîtrise complète du cycle de vie d'une application de Deep Learning : appropriation des architectures CNN, RNN/LSTM et des mécanismes d'attention ; conception et entraînement de modèles personnalisés avec PyTorch ; exploitation de la plateforme Kaggle et des GPU NVIDIA Tesla pour l'entraînement ; exposition de modèles via une API REST FastAPI ; création d'interfaces Flutter performantes avec gestion d'état et intégration caméra ; et utilisation de Firebase pour la persistance des données.
+
+Plusieurs améliorations peuvent être envisagées à court terme : intégration d'un module Text-to-Speech pour la lecture des légendes générées, extension à d'autres langues via des modèles de traduction ou des datasets multilingues, et quantification des modèles pour réduire l'empreinte mémoire. À moyen terme, des évolutions architecturales significatives peuvent être considérées : remplacement du décodeur LSTM par une architecture Transformer pour de meilleures performances, intégration de modèles pré-entraînés de type BLIP-2 ou LLaVA, et extension de l'entraînement au dataset COCO plus large et diversifié.
+
+Le projet AI Vision démontre la faisabilité d'un système de vision-langage déployable sur plateforme mobile, combinant des techniques établies avec des approches innovantes. L'architecture client-serveur retenue privilégie la précision via l'exploitation de modèles massifs, garantissant des résultats de qualité supérieure. Ce travail constitue une base solide pour des évolutions futures vers des architectures plus avancées. La maîtrise acquise sur l'ensemble du cycle de vie — de l'entraînement sur GPU cloud au déploiement mobile — représente un acquis technique significatif, transférable à de nombreux domaines d'application de l'intelligence artificielle.

@@ -1,0 +1,155 @@
+% ============================================================================
+% CHAPITRE 2 : CADRAGE DU PROJET
+% Style Wafacash - Approche positive, sans "Hors Scope"
+% ============================================================================
+
+\chapter{Cadrage du Projet}
+
+\section*{Introduction}
+Ce chapitre a pour objectif de définir le périmètre technique du projet AI Vision, de justifier les choix architecturaux retenus, et de présenter les spécifications fonctionnelles du système proposé.
+
+\section{Périmètre Fonctionnel}
+
+\subsection{Fonctionnalités du Système}
+
+Le système AI Vision offre les fonctionnalités suivantes :
+
+\begin{table}[H]
+\centering
+\caption{Fonctionnalités du système proposé}
+\begin{tabular}{lp{8cm}}
+\toprule
+\textbf{Fonctionnalité} & \textbf{Description} \\
+\midrule
+Image Captioning & Génération automatique de légendes textuelles décrivant le contenu d'une image \\
+Object Detection & Détection et localisation d'objets parmi 80 classes du dataset COCO \\
+Analyse Combinée & Fusion des résultats de détection et de captioning pour une description enrichie \\
+Historique & Persistance des analyses antérieures avec stockage cloud \\
+\bottomrule
+\end{tabular}
+\label{tab:features}
+\end{table}
+
+\subsection{Justification de l'Architecture Client-Serveur}
+
+L'architecture retenue privilégie une approche \textbf{client-serveur} pour maximiser la précision des résultats. Cette décision repose sur plusieurs considérations techniques :
+
+\begin{enumerate}
+    \item \textbf{Modèles massifs} : Les architectures de deep learning exploitées (InceptionV3, YOLOv12x) atteignent des tailles supérieures à 1 Go, inaccessibles aux contraintes mémoire des processeurs mobiles.
+    
+    \item \textbf{Précision optimale} : L'exécution sur serveur permet d'exploiter la pleine précision des modèles sans quantification ni compression, garantissant des résultats de qualité supérieure.
+    
+    \item \textbf{Accélération matérielle} : Le serveur bénéficie d'accélérateurs dédiés (GPU NVIDIA, Apple Silicon MPS) offrant des performances d'inférence significativement supérieures.
+    
+    \item \textbf{Évolutivité} : Cette architecture permet de mettre à jour les modèles côté serveur sans nécessiter de redéploiement de l'application mobile.
+\end{enumerate}
+
+\section{Spécifications Techniques}
+
+\subsection{Stack Technologique}
+
+\begin{table}[H]
+\centering
+\caption{Stack technique du système}
+\begin{tabular}{lll}
+\toprule
+\textbf{Composant} & \textbf{Technologie} & \textbf{Rôle} \\
+\midrule
+Frontend Mobile & Flutter / Dart & Interface utilisateur cross-platform \\
+Backend API & FastAPI / Python & Serveur REST pour l'inférence \\
+Framework DL & PyTorch & Exécution des modèles de deep learning \\
+Détection & Ultralytics YOLO & Module de détection d'objets \\
+Persistance & Firebase Firestore & Base de données cloud NoSQL \\
+\bottomrule
+\end{tabular}
+\label{tab:stack}
+\end{table}
+
+\subsection{Environnement d'Entraînement}
+
+L'entraînement des modèles de deep learning a été réalisé sur la plateforme \textbf{Kaggle}, exploitant des GPU \textbf{NVIDIA Tesla P100/T4}. Cette infrastructure cloud offre :
+\begin{itemize}
+    \item Accès gratuit à des ressources GPU performantes
+    \item Environnement Python pré-configuré avec les bibliothèques de deep learning
+    \item Stockage persistant pour les datasets et les poids des modèles
+\end{itemize}
+
+Les modèles entraînés sont ensuite exportés et déployés sur le serveur d'inférence FastAPI.
+
+\subsection{Architecture des Modèles}
+
+\begin{table}[H]
+\centering
+\caption{Spécifications des modèles de deep learning}
+\begin{tabular}{lll}
+\toprule
+\textbf{Modèle} & \textbf{Architecture} & \textbf{Pré-entraînement} \\
+\midrule
+Encodeur & InceptionV3 & ImageNet (1.2M images) \\
+Décodeur & LSTM + Attention Bahdanau & Flickr8k (8K images) \\
+Détecteur & YOLOv12x & COCO (330K images) \\
+\bottomrule
+\end{tabular}
+\label{tab:models}
+\end{table}
+
+\subsection{Interface de Programmation (API)}
+
+Le serveur expose une API REST documentée permettant l'accès aux fonctionnalités d'inférence :
+
+\begin{table}[H]
+\centering
+\caption{Spécification des endpoints REST}
+\begin{tabular}{llp{6cm}}
+\toprule
+\textbf{Méthode} & \textbf{Endpoint} & \textbf{Description} \\
+\midrule
+POST & \texttt{/caption} & Génère une légende textuelle pour l'image fournie \\
+POST & \texttt{/detect} & Détecte les objets présents dans l'image \\
+POST & \texttt{/analyze} & Analyse combinée (détection + captioning guidé) \\
+GET & \texttt{/health} & Vérifie l'état du serveur et des modèles chargés \\
+\bottomrule
+\end{tabular}
+\label{tab:endpoints}
+\end{table}
+
+\section{Contraintes et Exigences}
+
+\subsection{Exigences de Performance}
+
+\begin{table}[H]
+\centering
+\caption{Objectifs de performance}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Opération} & \textbf{Objectif} & \textbf{Mesuré} \\
+\midrule
+Génération de légende & $<$ 500 ms & $\sim$200 ms \\
+Détection d'objets & $<$ 100 ms & $\sim$50 ms \\
+Analyse combinée & $<$ 500 ms & $\sim$260 ms \\
+\bottomrule
+\end{tabular}
+\label{tab:latency}
+\end{table}
+
+\subsection{Exigences de Qualité}
+
+\begin{itemize}
+    \item \textbf{Pertinence} : Les légendes générées doivent refléter fidèlement le contenu visuel de l'image
+    \item \textbf{Cohérence grammaticale} : Les descriptions doivent être syntaxiquement correctes
+    \item \textbf{Fiabilité} : Le système doit maintenir une disponibilité élevée
+\end{itemize}
+
+\section{Critères de Validation}
+
+La validation du système repose sur les critères suivants :
+
+\begin{enumerate}
+    \item \textbf{Fonctionnel} : L'ensemble des fonctionnalités (captioning, détection, analyse, historique) est opérationnel
+    \item \textbf{Performance} : Les temps de réponse respectent les objectifs définis
+    \item \textbf{Qualité} : Les métriques BLEU atteignent des scores comparables aux modèles de référence
+    \item \textbf{Déploiement} : L'application est installable sur les plateformes iOS et Android
+\end{enumerate}
+
+\section*{Conclusion}
+En guise de conclusion, ce chapitre a permis de définir le périmètre technique du projet AI Vision. Nous avons justifié le choix d'une architecture client-serveur privilégiant la précision, présenté le stack technologique retenu, et établi les critères de validation. Le chapitre suivant expose les fondements théoriques des architectures de deep learning utilisées.

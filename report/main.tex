@@ -1,0 +1,106 @@
+\documentclass[a4paper]{report}
+
+%====================== PACKAGES ======================
+
+\usepackage[french]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{setspace}
+\usepackage{abstract}
+\usepackage[T1]{fontenc}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+\usepackage{subfig}
+\hypersetup{pdfborder=0 0 0}
+
+%====================== PACKAGES ADDITIONNELS ======================
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds, calc}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+
+% Couleurs du projet
+\definecolor{primaryblue}{RGB}{59, 130, 246}
+\definecolor{secondarypurple}{RGB}{139, 92, 246}
+\definecolor{successgreen}{RGB}{34, 197, 94}
+\definecolor{warningorange}{RGB}{249, 115, 22}
+
+%====================== INFORMATIONS ======================
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+
+\hypersetup{
+pdfauthor = {RAFI Mohamed Anas},
+pdftitle = {AI Vision - Pipeline Vision-Langage pour Image Captioning},
+pdfsubject = {Rapport de Stage},
+pdfkeywords = {Image Captioning, CNN-LSTM, Attention, YOLO, Flutter, FastAPI},
+pdfstartview={FitH}}
+
+%======================== DOCUMENT ========================
+
+\begin{document}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+% Page de garde
+\input{./title.tex}
+
+\newpage
+\thispagestyle{empty}
+\newpage
+
+% Résumé (Style Wafacash)
+\input{./resume.tex}
+
+% Tables
+\tableofcontents
+\thispagestyle{empty}
+
+\newpage
+\listoffigures
+\listoftables
+
+\renewcommand{\arraystretch}{1.5}
+
+%====================== CHAPITRES ======================
+
+\thispagestyle{empty}
+\setcounter{page}{0}
+\newpage
+
+% Chapitre 1 : Introduction Générale
+\input{./chapitre1_introduction.tex}
+
+% Chapitre 2 : Cadrage du Projet
+\input{./chapitre2_cadrage.tex}
+
+% Chapitre 3 : État de l'Art (Fondements Théoriques)
+\input{./chapitre3_theorie.tex}
+
+% Chapitre 4 : Conception et Architecture
+\input{./chapitre4_conception.tex}
+
+% Chapitre 5 : Implémentation et Résultats
+\input{./chapitre5_resultats.tex}
+
+% Chapitre 6 : Conclusion et Perspectives
+\input{./chapitre6_conclusion.tex}
+
+\newpage
+
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{references.bib}
+
+\end{document}

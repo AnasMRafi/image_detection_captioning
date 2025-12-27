@@ -1,0 +1,416 @@
+% ============================================================================
+% CHAPITRE 3 : ÉTAT DE L'ART - FONDEMENTS THÉORIQUES
+% Formules simplifiées avec explications détaillées
+% ============================================================================
+
+\chapter{État de l'Art : Fondements Théoriques}
+
+\section*{Introduction}
+Ce chapitre a pour objectif de présenter les fondements théoriques des architectures de deep learning utilisées dans le projet. Nous abordons successivement les réseaux convolutifs, les modèles récurrents, le mécanisme d'attention, et les détecteurs d'objets.
+
+\section{Réseaux de Neurones Convolutifs (CNN)}
+
+\subsection{Principe de la Convolution}
+
+Les réseaux de neurones convolutifs (\textit{Convolutional Neural Networks}, CNN) constituent l'architecture de référence pour le traitement d'images. Leur efficacité repose sur l'opération de convolution, qui permet l'extraction automatique de caractéristiques.
+
+L'opération de convolution bidimensionnelle s'exprime par :
+\begin{equation}
+    \text{Sortie}(i,j) = \sum_{m} \sum_{n} \text{Image}(i+m, j+n) \times \text{Filtre}(m,n)
+\end{equation}
+
+\textbf{Explication des symboles :}
+\begin{itemize}
+    \item $\text{Image}(i+m, j+n)$ : valeur du pixel à la position $(i+m, j+n)$ dans l'image
+    \item $\text{Filtre}(m,n)$ : poids du filtre (noyau de convolution) à la position $(m,n)$
+    \item $(i,j)$ : coordonnées de sortie
+    \item $\sum$ : somme de tous les produits pixel $\times$ poids
+\end{itemize}
+
+\subsection{Hiérarchie des Représentations}
+
+Les CNN apprennent des représentations de complexité croissante :
+\begin{itemize}
+    \item \textbf{Couches superficielles} : Contours, textures
+    \item \textbf{Couches intermédiaires} : Formes, motifs
+    \item \textbf{Couches profondes} : Objets, scènes
+\end{itemize}
+
+\subsection{Architecture InceptionV3}
+
+Le réseau \textbf{InceptionV3} (Szegedy et al., 2016) est utilisé comme encodeur visuel dans notre système. Son innovation principale réside dans les \textit{modules Inception} qui combinent des convolutions de différentes tailles en parallèle.
+
+\subsubsection{Principe des Modules Inception}
+
+L'idée clé est d'appliquer simultanément plusieurs filtres de différentes tailles sur la même entrée, puis de concaténer les résultats. Cela permet de capturer des motifs à différentes échelles :
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance=0.8cm,
+    box/.style={rectangle, draw=#1, thick, fill=#1!15, minimum width=2.2cm, minimum height=0.8cm, text centered, rounded corners=3pt, font=\footnotesize},
+    arrow/.style={-{Stealth[scale=0.9]}, thick, gray!70}
+]
+    % Input at top
+    \node[box=gray, minimum width=12cm] (input) {Feature Map d'entrée};
+    
+    % 4 parallel branches - wider spacing
+    \node[box=blue, below=1.2cm of input, xshift=-4.5cm] (b1) {Conv 1x1};
+    
+    \node[box=blue, below=1.2cm of input, xshift=-1.5cm] (b2a) {Conv 1x1};
+    \node[box=blue, below=0.7cm of b2a] (b2b) {Conv 3x3};
+    
+    \node[box=blue, below=1.2cm of input, xshift=1.5cm] (b3a) {Conv 1x1};
+    \node[box=blue, below=0.7cm of b3a] (b3b) {Conv 5x5};
+    
+    \node[box=orange, below=1.2cm of input, xshift=4.5cm] (b4a) {MaxPool 3x3};
+    \node[box=blue, below=0.7cm of b4a] (b4b) {Conv 1x1};
+    
+    % Concatenation at bottom
+    \node[box=green, below=4cm of input, minimum width=12cm] (concat) {Concaténation (Filter Concat)};
+    
+    % Arrows from input to branches
+    \draw[arrow] (input.south) -- ++(0,-0.4) -| (b1.north);
+    \draw[arrow] (input.south) -- ++(0,-0.4) -| (b2a.north);
+    \draw[arrow] (input.south) -- ++(0,-0.4) -| (b3a.north);
+    \draw[arrow] (input.south) -- ++(0,-0.4) -| (b4a.north);
+    
+    % Arrows within branches
+    \draw[arrow] (b2a) -- (b2b);
+    \draw[arrow] (b3a) -- (b3b);
+    \draw[arrow] (b4a) -- (b4b);
+    
+    % Arrows to concat
+    \draw[arrow] (b1.south) -- ++(0,-1.2) -| ([xshift=-4.5cm]concat.north);
+    \draw[arrow] (b2b.south) -- ([xshift=-1.5cm]concat.north);
+    \draw[arrow] (b3b.south) -- ([xshift=1.5cm]concat.north);
+    \draw[arrow] (b4b.south) -- ([xshift=4.5cm]concat.north);
+    
+    % Labels for branches
+    \node[font=\scriptsize, gray] at ([yshift=0.4cm]b1.north) {Branche 1};
+    \node[font=\scriptsize, gray] at ([yshift=0.4cm]b2a.north) {Branche 2};
+    \node[font=\scriptsize, gray] at ([yshift=0.4cm]b3a.north) {Branche 3};
+    \node[font=\scriptsize, gray] at ([yshift=0.4cm]b4a.north) {Branche 4};
+    
+\end{tikzpicture}
+\caption{Structure d'un module Inception -- traitement parallèle multi-échelle}
+\label{fig:inception_module}
+\end{figure}
+
+\textbf{Rôle de chaque branche :}
+\begin{itemize}
+    \item \textbf{Branche 1 (1$\times$1)} : Capture les informations ponctuelles, réduit les dimensions
+    \item \textbf{Branche 2 (3$\times$3)} : Détecte les motifs de taille moyenne
+    \item \textbf{Branche 3 (5$\times$5)} : Capture les patterns plus larges
+    \item \textbf{Branche 4 (MaxPool)} : Préserve les caractéristiques les plus saillantes
+\end{itemize}
+
+\subsubsection{Architecture Complète d'InceptionV3}
+
+Le réseau complet empile plusieurs modules Inception organisés en trois groupes (A, B, C), séparés par des couches de réduction qui diminuent la résolution spatiale :
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance=0.4cm,
+    block/.style={rectangle, draw=blue!60, thick, fill=blue!20, minimum width=1.6cm, minimum height=1.2cm, text centered, rounded corners=3pt, font=\scriptsize},
+    stem/.style={rectangle, draw=purple!60, thick, fill=purple!20, minimum width=1.6cm, minimum height=1.2cm, text centered, rounded corners=3pt, font=\scriptsize},
+    red/.style={rectangle, draw=red!60, thick, fill=red!20, minimum width=1.2cm, minimum height=1.2cm, text centered, rounded corners=3pt, font=\scriptsize},
+    arrow/.style={-{Stealth[scale=0.8]}, thick, gray!70}
+]
+    % Row 1: Input and Stem
+    \node[block, fill=green!20, draw=green!60] (input) {Image 299};
+    \node[stem, right=0.4cm of input] (conv1) {Conv 3x3};
+    \node[stem, right=0.3cm of conv1] (conv2) {Conv 3x3};
+    \node[stem, right=0.3cm of conv2] (conv3) {Conv 3x3};
+    \node[stem, right=0.3cm of conv3] (pool1) {MaxPool};
+    
+    % Row 2: More stem
+    \node[stem, right=0.3cm of pool1] (conv4) {Conv 1x1};
+    \node[stem, right=0.3cm of conv4] (conv5) {Conv 3x3};
+    \node[stem, right=0.3cm of conv5] (pool2) {MaxPool};
+    
+    % Arrows for stem
+    \draw[arrow] (input) -- (conv1);
+    \draw[arrow] (conv1) -- (conv2);
+    \draw[arrow] (conv2) -- (conv3);
+    \draw[arrow] (conv3) -- (pool1);
+    \draw[arrow] (pool1) -- (conv4);
+    \draw[arrow] (conv4) -- (conv5);
+    \draw[arrow] (conv5) -- (pool2);
+    
+    % Row 3: Inception modules
+    \node[block, below=1cm of conv1] (incA1) {Inc. A};
+    \node[block, right=0.2cm of incA1] (incA2) {Inc. A};
+    \node[block, right=0.2cm of incA2] (incA3) {Inc. A};
+    \node[red, right=0.3cm of incA3] (redA) {Red. A};
+    \node[block, right=0.3cm of redA, fill=cyan!20, draw=cyan!60] (incB1) {Inc. B};
+    \node[block, right=0.2cm of incB1, fill=cyan!20, draw=cyan!60] (incB2) {Inc. B};
+    \node[block, right=0.2cm of incB2, fill=cyan!20, draw=cyan!60] (incB3) {Inc. B};
+    \node[block, right=0.2cm of incB3, fill=cyan!20, draw=cyan!60] (incB4) {Inc. B};
+    
+    % Row 4: More modules
+    \node[red, below=0.8cm of incA3] (redB) {Red. B};
+    \node[block, right=0.3cm of redB, fill=yellow!30, draw=yellow!60] (incC1) {Inc. C};
+    \node[block, right=0.2cm of incC1, fill=yellow!30, draw=yellow!60] (incC2) {Inc. C};
+    \node[stem, right=0.3cm of incC2, fill=purple!30] (avgpool) {AvgPool};
+    \node[block, right=0.3cm of avgpool, fill=orange!30, draw=orange!60] (output) {2048};
+    
+    % Connect stem to inception
+    \draw[arrow] (pool2.south) -- ++(0,-0.3) -| (incA1.north);
+    
+    % Arrows for inception modules
+    \draw[arrow] (incA1) -- (incA2);
+    \draw[arrow] (incA2) -- (incA3);
+    \draw[arrow] (incA3) -- (redA);
+    \draw[arrow] (redA) -- (incB1);
+    \draw[arrow] (incB1) -- (incB2);
+    \draw[arrow] (incB2) -- (incB3);
+    \draw[arrow] (incB3) -- (incB4);
+    \draw[arrow] (incB4.south) -- ++(0,-0.25) -| (redB.north);
+    \draw[arrow] (redB) -- (incC1);
+    \draw[arrow] (incC1) -- (incC2);
+    \draw[arrow] (incC2) -- (avgpool);
+    \draw[arrow] (avgpool) -- (output);
+    
+    % Dimension annotations
+    \node[font=\tiny, gray, below=0.05cm of incA1] {35x35};
+    \node[font=\tiny, gray, below=0.05cm of incB1] {17x17};
+    \node[font=\tiny, gray, below=0.05cm of incC1] {8x8};
+    
+\end{tikzpicture}
+\caption{Architecture complète d'InceptionV3}
+\label{fig:inceptionv3_arch}
+\end{figure}
+
+\textbf{Description des composants :}
+\begin{itemize}
+    \item \textbf{Stem (violet)} : 7 couches convolutives initiales réduisant 299$\times$299 $\rightarrow$ 35$\times$35
+    \item \textbf{Inception A (bleu)} : 3 modules, résolution 35$\times$35, 288 filtres
+    \item \textbf{Reduction A (rouge)} : Réduit à 17$\times$17 avec stride 2
+    \item \textbf{Inception B (cyan)} : 4 modules, résolution 17$\times$17, 768 filtres
+    \item \textbf{Reduction B (rouge)} : Réduit à 8$\times$8 avec stride 2
+    \item \textbf{Inception C (jaune)} : 2 modules, résolution 8$\times$8, 2048 filtres
+    \item \textbf{Global AvgPool} : Moyenne spatiale $\rightarrow$ vecteur 1$\times$2048
+\end{itemize}
+
+\begin{table}[H]
+\centering
+\caption{Caractéristiques techniques d'InceptionV3}
+\begin{tabular}{ll}
+\toprule
+\textbf{Propriété} & \textbf{Valeur} \\
+\midrule
+Entrée & Image 299 $\times$ 299 pixels (RGB) \\
+Sortie & Vecteur de 2048 dimensions \\
+Profondeur & 48 couches (sans compter pooling) \\
+Paramètres & 23.8 millions \\
+Opérations & 5.7 milliards de multiplications-additions \\
+Pré-entraînement & ImageNet (1.2 million d'images, 1000 classes) \\
+Top-1 Accuracy & 78.8\% sur ImageNet \\
+\bottomrule
+\end{tabular}
+\label{tab:inceptionv3}
+\end{table}
+
+\section{Réseaux Récurrents (RNN/LSTM)}
+
+\subsection{Modélisation Séquentielle}
+
+Les réseaux récurrents traitent des séquences (comme des phrases). À chaque étape $t$, le réseau calcule un état caché :
+
+\begin{equation}
+    h_t = \tanh(W \times h_{t-1} + U \times x_t + b)
+\end{equation}
+
+\textbf{Explication des symboles :}
+\begin{itemize}
+    \item $h_t$ : état caché au temps $t$ (mémoire du réseau)
+    \item $h_{t-1}$ : état caché précédent (au temps $t-1$)
+    \item $x_t$ : entrée actuelle (mot actuel encodé)
+    \item $W$ : matrice de poids pour l'état précédent
+    \item $U$ : matrice de poids pour l'entrée
+    \item $b$ : biais (terme constant)
+    \item $\tanh$ : fonction d'activation (compresse les valeurs entre -1 et 1)
+\end{itemize}
+
+\subsection{Architecture LSTM}
+
+Les réseaux \textbf{LSTM} (\textit{Long Short-Term Memory}) utilisent des ``portes'' pour contrôler le flux d'information :
+
+\begin{table}[H]
+\centering
+\caption{Portes du LSTM et leurs rôles}
+\begin{tabular}{lp{8cm}}
+\toprule
+\textbf{Porte} & \textbf{Rôle} \\
+\midrule
+Porte d'oubli $f$ & Décide quoi oublier de la mémoire précédente \\
+Porte d'entrée $i$ & Décide quoi ajouter à la mémoire \\
+Porte de sortie $o$ & Décide quoi exposer comme sortie \\
+\bottomrule
+\end{tabular}
+\label{tab:lstm_gates}
+\end{table}
+
+Les équations du LSTM sont :
+
+\vspace{0.3cm}
+\textbf{1. Porte d'oubli} (quoi oublier ?) :
+\begin{equation}
+    f_t = \sigma(W_f \times [h_{t-1}, x_t] + b_f)
+\end{equation}
+
+\textbf{2. Porte d'entrée} (quoi ajouter ?) :
+\begin{equation}
+    i_t = \sigma(W_i \times [h_{t-1}, x_t] + b_i)
+\end{equation}
+
+\textbf{3. Nouvelle information candidate} :
+\begin{equation}
+    \tilde{C}_t = \tanh(W_C \times [h_{t-1}, x_t] + b_C)
+\end{equation}
+
+\textbf{4. Mise à jour de la mémoire} :
+\begin{equation}
+    C_t = f_t \odot C_{t-1} + i_t \odot \tilde{C}_t
+\end{equation}
+
+\textbf{5. Porte de sortie} (quoi exposer ?) :
+\begin{equation}
+    o_t = \sigma(W_o \times [h_{t-1}, x_t] + b_o)
+\end{equation}
+
+\textbf{6. État caché final} :
+\begin{equation}
+    h_t = o_t \odot \tanh(C_t)
+\end{equation}
+
+\textbf{Explication des symboles communs :}
+\begin{itemize}
+    \item $\sigma$ : fonction sigmoïde (compresse entre 0 et 1, sert de ``porte'')
+    \item $\tanh$ : fonction tangente hyperbolique (compresse entre -1 et 1)
+    \item $\odot$ : multiplication élément par élément
+    \item $[h_{t-1}, x_t]$ : concaténation de l'état précédent et de l'entrée
+    \item $C_t$ : état cellulaire (mémoire à long terme)
+    \item $W_f, W_i, W_C, W_o$ : matrices de poids (paramètres appris)
+    \item $b_f, b_i, b_C, b_o$ : biais (termes constants)
+\end{itemize}
+
+\section{Mécanisme d'Attention de Bahdanau}
+
+\subsection{Motivation}
+
+Sans attention, le modèle compresse toute l'image en un seul vecteur, perdant de l'information. L'attention permet de ``regarder'' différentes régions de l'image selon le mot à générer.
+
+\subsection{Calcul des Scores d'Attention}
+
+Pour chaque région $j$ de l'image, on calcule un score d'attention :
+
+\begin{equation}
+    \text{score}_j = V^\top \times \tanh(W_1 \times \text{features}_j + W_2 \times \text{état\_décodeur})
+\end{equation}
+
+\textbf{Explication des symboles :}
+\begin{itemize}
+    \item $\text{score}_j$ : importance de la région $j$ pour le mot actuel
+    \item $\text{features}_j$ : caractéristiques visuelles de la région $j$ (vecteur de 2048 nombres)
+    \item $\text{état\_décodeur}$ : état caché actuel du LSTM (vecteur de 512 nombres)
+    \item $W_1, W_2$ : matrices de poids appris
+    \item $V$ : vecteur de poids appris
+    \item $\tanh$ : fonction d'activation
+    \item $^\top$ : transposée (inverse lignes/colonnes)
+\end{itemize}
+
+\subsection{Normalisation par Softmax}
+
+Les scores sont convertis en poids entre 0 et 1 (sommant à 1) :
+
+\begin{equation}
+    \alpha_j = \frac{e^{\text{score}_j}}{\sum_{k=1}^{64} e^{\text{score}_k}}
+\end{equation}
+
+\textbf{Explication :}
+\begin{itemize}
+    \item $\alpha_j$ : poids d'attention pour la région $j$ (entre 0 et 1)
+    \item $e^x$ : exponentielle de $x$
+    \item La somme des 64 poids $\alpha_j$ vaut 1 (100\%)
+    \item Plus $\alpha_j$ est grand, plus le modèle ``regarde'' la région $j$
+\end{itemize}
+
+\subsection{Vecteur de Contexte}
+
+Le contexte est la moyenne pondérée des caractéristiques visuelles :
+
+\begin{equation}
+    \text{contexte} = \sum_{j=1}^{64} \alpha_j \times \text{features}_j
+\end{equation}
+
+\textbf{Explication :}
+\begin{itemize}
+    \item $\text{contexte}$ : vecteur résumant ``où le modèle regarde'' (2048 nombres)
+    \item On multiplie chaque région par son poids d'attention, puis on additionne
+    \item 64 : nombre de régions spatiales (grille 8$\times$8)
+\end{itemize}
+
+\section{Détection d'Objets : YOLO}
+
+\subsection{Paradigme One-Stage}
+
+L'architecture \textbf{YOLO} (\textit{You Only Look Once}) détecte tous les objets en une seule passe :
+
+\begin{enumerate}
+    \item L'image est divisée en une grille (par exemple 13$\times$13)
+    \item Chaque cellule prédit les objets qu'elle contient
+    \item Une seule inférence produit toutes les détections
+\end{enumerate}
+
+\subsection{Évolution de la Famille YOLO}
+
+\begin{table}[H]
+\centering
+\caption{Évolution de l'architecture YOLO (versions récentes, modèles X)}
+\begin{tabular}{lccp{5cm}}
+\toprule
+\textbf{Version} & \textbf{Année} & \textbf{mAP (COCO)} & \textbf{Innovation} \\
+\midrule
+YOLOv9x & 2024 & 55.6\% & PGI, GELAN architecture \\
+YOLOv10x & 2024 & 54.4\% & NMS-free, dual assignments \\
+YOLOv11x & 2024 & 54.7\% & C3k2, C2PSA attention \\
+\textbf{YOLOv12x} & \textbf{2025} & \textbf{55.2\%} & \textbf{Area Attention} \\
+\bottomrule
+\end{tabular}
+\label{tab:yolo_evolution}
+\end{table}
+
+\textbf{Note :} mAP = Mean Average Precision sur le dataset COCO val2017. Les valeurs correspondent aux modèles de taille ``X'' (extra-large).
+
+\section{Paradigme Encoder-Decoder}
+
+L'Image Captioning combine les composants ainsi :
+\begin{enumerate}
+    \item \textbf{Encodeur CNN} : Image $\rightarrow$ 64 vecteurs de 2048 nombres
+    \item \textbf{Attention} : Pondère les 64 régions selon le contexte
+    \item \textbf{Décodeur LSTM} : Génère les mots un par un
+\end{enumerate}
+
+\subsection{Décodage par Beam Search}
+
+Au lieu de choisir le mot le plus probable à chaque étape (glouton), le \textbf{Beam Search} garde les $k$ meilleures phrases candidates :
+
+\begin{table}[H]
+\centering
+\caption{Comparaison des stratégies de décodage}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Stratégie} & \textbf{Complexité} & \textbf{Qualité} \\
+\midrule
+Glouton & Rapide & Moyenne \\
+Beam Search ($k$=3) & 3$\times$ plus lent & Meilleure \\
+\bottomrule
+\end{tabular}
+\label{tab:decoding}
+\end{table}
+
+\section*{Conclusion}
+En guise de conclusion, ce chapitre a présenté les fondements théoriques des architectures exploitées : CNN pour l'extraction de caractéristiques visuelles, LSTM pour la génération séquentielle, attention de Bahdanau pour la focalisation dynamique, et YOLO pour la détection d'objets. Le chapitre suivant détaille la conception et l'architecture du système.

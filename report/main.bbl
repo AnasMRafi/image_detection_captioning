@@ -1,0 +1,69 @@
+\begin{thebibliography}{10}
+
+\bibitem{pytorch2025}
+Meta AI.
+\newblock Pytorch: An open source machine learning framework.
+\newblock \url{https://pytorch.org}, 2025.
+\newblock Consulté entre le 28 novembre et le 18 décembre 2025.
+
+\bibitem{bahdanau2015attention}
+Dzmitry Bahdanau, Kyunghyun Cho, and Yoshua Bengio.
+\newblock Neural machine translation by jointly learning to align and translate.
+\newblock {\em arXiv preprint arXiv:1409.0473}, 2015.
+\newblock Consulté entre le 28 novembre et le 18 décembre 2025.
+
+\bibitem{firebase2025}
+Google.
+\newblock Firebase: App development platform.
+\newblock \url{https://firebase.google.com}, 2025.
+\newblock Consulté entre le 28 novembre et le 18 décembre 2025.
+
+\bibitem{flutter2025}
+Google.
+\newblock Flutter: Build apps for any screen.
+\newblock \url{https://flutter.dev}, 2025.
+\newblock Consulté entre le 28 novembre et le 18 décembre 2025.
+
+\bibitem{kaggle2025}
+Google.
+\newblock Kaggle: Your machine learning and data science community.
+\newblock \url{https://www.kaggle.com}, 2025.
+\newblock Plateforme utilisée pour l'entraînement des modèles, du 28 novembre au 18 décembre 2025.
+
+\bibitem{hochreiter1997lstm}
+Sepp Hochreiter and J{\"u}rgen Schmidhuber.
+\newblock Long short-term memory.
+\newblock {\em Neural computation}, 9(8):1735--1780, 1997.
+\newblock Consulté entre le 28 novembre et le 18 décembre 2025.
+
+\bibitem{hodosh2013flickr8k}
+Micah Hodosh, Peter Young, and Julia Hockenmaier.
+\newblock Framing image description as a ranking task: Data, models and evaluation metrics.
+\newblock {\em Journal of Artificial Intelligence Research}, 47:853--899, 2013.
+\newblock Consulté entre le 28 novembre et le 18 décembre 2025.
+
+\bibitem{yolov12}
+Yunjie Tian et~al.
+\newblock Yolov12: Attention-centric real-time object detectors.
+\newblock {\em arXiv preprint}, 2025.
+\newblock Consulté entre le 28 novembre et le 18 décembre 2025.
+
+\bibitem{fastapi2025}
+Sebasti{\'a}n~Ram{\'i}rez Tiangolo.
+\newblock Fastapi: Modern, fast web framework for building apis with python.
+\newblock \url{https://fastapi.tiangolo.com}, 2025.
+\newblock Consulté entre le 28 novembre et le 18 décembre 2025.
+
+\bibitem{ultralytics2025}
+Ultralytics.
+\newblock Ultralytics yolo.
+\newblock \url{https://github.com/ultralytics/ultralytics}, 2025.
+\newblock Consulté entre le 28 novembre et le 18 décembre 2025.
+
+\bibitem{vinyals2015show}
+Oriol Vinyals, Alexander Toshev, Samy Bengio, and Dumitru Erhan.
+\newblock Show and tell: A neural image caption generator.
+\newblock In {\em Proceedings of the IEEE conference on computer vision and pattern recognition}, pages 3156--3164, 2015.
+\newblock Consulté entre le 28 novembre et le 18 décembre 2025.
+
+\end{thebibliography}

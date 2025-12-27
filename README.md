@@ -120,25 +120,15 @@ Flutter_DL_Img_Captioning/
 │   ├── main.py                 # FastAPI server
 │   ├── config.py               # Configuration
 │   ├── utils.py                # Utility functions
-│   ├── captioning_notebook_kaggle.py  # Training notebook
-│   └── models/                 # Trained model weights (not in repo)
-│       ├── encoder.pth
-│       ├── decoder.pth
-│       └── vocab.pkl
+│   ├── image_captioning.ipynb  # Training notebook
+│   └── requirements.txt        # Python dependencies
 │
 ├── frontend/
 │   ├── lib/
 │   │   ├── main.dart           # App entry point
-│   │   ├── ui/
-│   │   │   ├── home_screen.dart
-│   │   │   ├── captioning_screen.dart
-│   │   │   ├── detection_screen.dart
-│   │   │   ├── analysis_screen.dart
-│   │   │   └── history_screen.dart
-│   │   ├── services/
-│   │   │   ├── api_service.dart
-│   │   │   └── firebase_service.dart
-│   │   └── models/
+│   │   ├── ui/                 # Screens (home, captioning, detection, analysis, history)
+│   │   ├── services/           # API, Firebase, Detection services
+│   │   └── models/             # Data models
 │   └── pubspec.yaml
 │
 └── README.md
@@ -318,41 +308,7 @@ Combined captioning and detection.
 
 ---
 
-## Screenshots
-
-*Add screenshots of your app here*
-
-| Home | Captioning | Detection | History |
-|------|------------|-----------|---------|
-| ![Home](screenshots/home.png) | ![Caption](screenshots/caption.png) | ![Detect](screenshots/detect.png) | ![History](screenshots/history.png) |
-
----
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
----
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
 ## Authors
 
 - **Anas M Rafi** - [GitHub](https://github.com/AnasMRafi)
 
----
-
-## Acknowledgments
-
-- [Flickr8k Dataset](https://www.kaggle.com/datasets/adityajn105/flickr8k)
-- [PyTorch](https://pytorch.org/)
-- [Ultralytics YOLO](https://github.com/ultralytics/ultralytics)
-- [Flutter](https://flutter.dev/)
