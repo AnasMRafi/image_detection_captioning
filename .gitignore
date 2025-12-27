@@ -1,0 +1,55 @@
+# ====================
+# Python
+# ====================
+__pycache__/
+*.py[cod]
+*.so
+.venv/
+*.egg-info/
+
+# ====================
+# Backend Unused Files
+# ====================
+backend/captioning_notebook_jupyter.py
+backend/captioning_notebook_kaggle.py
+backend/detection_notebook_jupyter.py
+backend/models.*
+
+# ====================
+# Large Model Files
+# ====================
+*.pth
+*.pkl
+*.pt
+
+# ====================
+# macOS
+# ====================
+.DS_Store
+
+# ====================
+# IDE
+# ====================
+.vscode/
+.idea/
+
+# ====================
+# Environment
+# ====================
+.env
+*.env.local
+
+# ====================
+# Report
+# ====================
+report/
+
+# ====================
+# Backend
+# ====================
+backend/models/
+backend/models_2/
+backend/yolo12x.pt
+backend/.venv/
+backend/dataset/
+
